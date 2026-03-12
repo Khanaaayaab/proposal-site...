@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinematic Proposal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Reset & base */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body, html { width:100%; height:100%; overflow:hidden; font-family: 'Roboto', sans-serif; }
+
+    /* Background */
+    body {
+      background: #0a0a0a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: #fff;
+    }
+
+    /* Floating light particles */
+    .particles { position:absolute; width:100%; height:100%; overflow:hidden; z-index:0; }
+    .particle {
+      position:absolute;
+      width:4px; height:4px;
+      background: gold;
+      border-radius:50%;
+      opacity:0.7;
+      box-shadow: 0 0 10px gold;
+      animation: float 15s linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) translateX(0); opacity:0.7; }
+      100% { transform: translateY(-50px) translateX(50px); opacity:0; }
+    }
+
+    /* Scene container */
+    .scene { position:absolute; width:100%; height:100%; display:flex; justify-content:center; align-items:center; text-align:center; padding:20px; flex-direction:column; opacity:0; transition: opacity 2s ease; }
+
+    .scene.show { opacity:1; }
+
+    /* Text styles */
+    .scene p { font-size:1.5rem; max-width:700px; margin-bottom:20px; line-height:1.5; }
+    .scene h1 { font-family:'Great Vibes', cursive; font-size:2.5rem; color:gold; margin-bottom:20px; }
+
+    /* Soft glow for Scene 3 & 4 */
+    .glow { background: radial-gradient(circle, rgba(255,215,0,0.1), transparent); padding:30px; border-radius:20px; }
+
+    /* Proposal card */
+    .card {
+      background:#fff8f0;
+      color:#111;
+      padding:30px 25px;
+      border-radius:20px;
+      max-width:500px;
+      text-align:center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      opacity:0;
+      transform: translateY(50px);
+      transition: all 1s ease;
+      z-index:2;
+    }
+    .card.show { opacity:1; transform: translateY(0); }
+
+    .card h2 { font-family:'Great Vibes', cursive; font-size:2rem; color:gold; margin-bottom:15px; }
+    .card p { font-size:1rem; line-height:1.6; margin-bottom:20px; }
+    .card .buttons { display:flex; justify-content:center; gap:15px; flex-wrap:wrap; }
+    .card button { padding:10px 20px; border:none; border-radius:50px; cursor:pointer; transition: all 0.3s ease; font-weight:bold; }
+
+    .yes { background:gold; color:#111; }
+    .yes:hover { transform:scale(1.1); }
+    .think { background:#ddd; color:#111; }
+    .think:hover { transform:scale(1.1); }
+
+    .final-message { display:none; font-size:1.2rem; font-weight:bold; color:gold; margin-top:15px; }
+
+    /* Hearts animation */
+    .hearts {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:3;
+    }
+    .hearts div {
+      position:absolute;
+      width:20px; height:20px;
+      background:red;
+      transform:rotate(-45deg);
+      animation: rise 4s linear infinite;
+    }
+    .hearts div:before,
+    .hearts div:after {
+      content:"";
+      position:absolute;
+      width:20px; height:20px;
+      background:red;
+      border-radius:50%;
+    }
+    .hearts div:before { top:-10px; left:0; }
+    .hearts div:after { top:0; left:10px; }
+    @keyframes rise {
+      0% { transform:translateY(0) rotate(-45deg); opacity:1; }
+      100% { transform:translateY(-800px) rotate(-45deg); opacity:0; }
+    }
+
+    /* Responsive */
+    @media (max-width:600px){
+      .scene p { font-size:1.2rem; }
+      .scene h1 { font-size:2rem; }
+      .card { width:90%; padding:20px; }
+      .card h2 { font-size:1.7rem; }
+      .card p { font-size:0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Scenes -->
+  <div class="scene" id="scene1">
+    <p>Sometimes in life…<br>Allah sends someone special…<br>Someone who changes everything.</p>
+  </div>
+
+  <div class="scene" id="scene2">
+    <p>The day you came into my life,<br>happiness found its way to my heart.</p>
+  </div>
+
+  <div class="scene glow" id="scene3">
+    <p>Every moment with you feels like a blessing.<br>And I realized…<br>I don’t want just moments with you…<br>I want a lifetime.</p>
+  </div>
+
+  <div class="scene glow" id="scene4">
+    <h1>With respect and sincerity…<br>I want to ask you something very important.</h1>
+  </div>
+
+  <!-- Proposal card -->
+  <div class="scene" id="scene5">
+    <div class="card" id="proposal-card">
+      <h2>Will You Accept Me For Nikkah?</h2>
+      <p>Will you walk with me in this journey of life<br>as my partner, my peace, and my forever?</p>
+      <div class="buttons">
+        <button class="yes" id="yes-btn">💍 Yes, I Accept</button>
+        <button class="think" id="think-btn">😊 I Need Time</button>
+      </div>
+      <div class="final-message" id="final-message">Alhamdulillah ❤️<br>May Allah bless our Nikkah and our future together.</div>
+    </div>
+  </div>
+
+  <!-- Hearts animation -->
+  <div class="hearts" id="hearts-container"></div>
+
+  <!-- Background music -->
+  <audio id="bg-music" autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Generate particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i=0; i<50; i++){
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      p.style.left = Math.random()*100 + 'vw';
+      p.style.width = p.style.height = (3+Math.random()*5)+'px';
+      p.style.animationDuration = (10+Math.random()*10)+'s';
+      particlesContainer.appendChild(p);
+    }
+
+    // Scenes sequence
+    const scenes = ['scene1','scene2','scene3','scene4','scene5'];
+    let index = 0;
+
+    function showNextScene(){
+      if(index>0) document.getElementById(scenes[index-1]).classList.remove('show');
+      if(index<scenes.length){
+        document.getElementById(scenes[index]).classList.add('show');
+        if(scenes[index]==='scene5'){
+          document.getElementById('proposal-card').classList.add('show');
+        }
+        index++;
+        setTimeout(showNextScene, 4000);
+      }
+    }
+
+    window.addEventListener('load', ()=>{
+      showNextScene();
+    });
+
+    // Proposal buttons
+    const yesBtn = document.getElementById('yes-btn');
+    const thinkBtn = document.getElementById('think-btn');
+    const finalMessage = document.getElementById('final-message');
+    const heartsContainer = document.getElementById('hearts-container');
+
+    yesBtn.addEventListener('click', ()=>{
+      finalMessage.style.display = 'block';
+      // Hearts animation
+      for(let i=0;i<50;i++){
+        const heart = document.createElement('div');
+        heart.style.left = Math.random()*100 + 'vw';
+        heart.style.animationDuration = (3+Math.random()*3)+'s';
+        heart.style.width = (10+Math.random()*10)+'px';
+        heart.style.height = heart.style.width;
+        heartsContainer.appendChild(heart);
+        setTimeout(()=>heart.remove(),4000);
+      }
+    });
+
+    thinkBtn.addEventListener('click', ()=>{
+      alert("Take your time, I’ll be waiting patiently 😊");
+    });
+  </script>
+</body>
+</html>
